@@ -17,7 +17,7 @@
     <button onclick="sendEmail()">Send Email</button>
 
     <script>
-        const accessToken = 'ya29.a0AXooCgsUfQC-nIHD8RVdHS-uKGlpO84UEI59Z8mOOObbydMLx2JlSezWhMtz3k6IaZXmBq6FVeqsrTBOJIJr1X9cwK1Zx4TPlnLKIOkmhHGCf1Ao_XjiSYF3xYJ0nl6_MCHsaZ4al_fqNEMQScgg1ckesdoc2XTenL0eaCgYKARESARISFQHGX2MiYyuvFMsTaSsvig_zJEf6bQ0171';  // 替换为您从OAuth 2.0 Playground获取的访问令牌
+        const accessToken = 'ya29.a0AXooCgvXfNq0RINFDTI_iZVfPmr3NZtt7Sv29ffrzF0t9u-oLQmZ6zrRsFjQ6r8s0FHSxfkuGaepI60a9tPuG93SIce6lgQ3p3ulXWR_Tb69SJ3LZLtBjiZsGlbbOoX8-BfQv14Pb2bQk5Zq8d21sWTIVG59xdvqgnUGaCgYKAUgSARISFQHGX2MiU-sWAZeDeS9X7Ve1G0-2Iw0171';  // 替换为您从OAuth 2.0 Playground获取的访问令牌
 
         async function fetchEmails() {
             try {
@@ -39,14 +39,17 @@
 
         async function sendEmail() {
             const email = `
-                From: "liuyi31152@gmail.com"  // 替换为您的实际发件人邮箱
-                To: "janecai147@gmail.com"  // 替换为您的实际收件人邮箱
+                From:liuyi31152@gmail.com
+                To: janecai147@gmail.com
                 Subject: Test Email
                 Content-Type: text/plain; charset="UTF-8"
 
                 This is a test email.
             `;
-            const base64Email = btoa(unescape(encodeURIComponent(email))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            const base64Email = btoa(unescape(encodeURIComponent(email)))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
 
             try {
                 const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
@@ -66,6 +69,7 @@
                 console.log('Sent Email:', data);
             } catch (error) {
                 console.error('Error sending email:', error);
+                console.error('Response body:', error.message);
             }
         }
     </script>
