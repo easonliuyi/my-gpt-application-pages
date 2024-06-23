@@ -13,17 +13,46 @@
         <a href="/terms-of-service.html">Terms of Service</a>
     </nav>
 
-    <!-- OAuth 2.0 Authorization Button -->
-    <button onclick="authorize()">Authorize Gmail Access</button>
+    <button onclick="fetchEmails()">Fetch Emails</button>
+    <button onclick="sendEmail()">Send Email</button>
 
     <script>
-        const clientId = '456295832471-dmkgoii3bmr8igrfpagm99njhbkuv4s2.apps.googleusercontent.com';  // 替换为您的OAuth客户端ID
-        const redirectUri = 'https://easonliuyi.github.io/my-gpt-application-pages/oauth2callback';
-        const scope = 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send';
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
+        const accessToken = 'ya29.a0AXooCgsUfQC-nIHD8RVdHS-uKGlpO84UEI59Z8mOOObbydMLx2JlSezWhMtz3k6IaZXmBq6FVeqsrTBOJIJr1X9cwK1Zx4TPlnLKIOkmhHGCf1Ao_XjiSYF3xYJ0nl6_MCHsaZ4al_fqNEMQScgg1ckesdoc2XTenL0eaCgYKARESARISFQHGX2MiYyuvFMsTaSsvig_zJEf6bQ0171';  // 替换为您从OAuth 2.0 Playground获取的访问令牌
 
-        function authorize() {
-            window.location.href = authUrl;
+        async function fetchEmails() {
+            const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            const data = await response.json();
+            console.log('Emails:', data);
+        }
+
+        async function sendEmail() {
+            const email = `
+                From: "your-email@example.com"
+                To: "recipient@example.com"
+                Subject: Test Email
+                Content-Type: text/plain; charset="UTF-8"
+
+                This is a test email.
+            `;
+            const base64Email = btoa(unescape(encodeURIComponent(email))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+            const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    raw: base64Email
+                })
+            });
+            const data = await response.json();
+            console.log('Sent Email:', data);
         }
     </script>
 </body>
