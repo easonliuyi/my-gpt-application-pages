@@ -39,8 +39,8 @@
 
         async function sendEmail() {
             const email = `
-                From: "liuyi31152@gmai.com"
-                To: "janecai147@gmail.com"
+                From: "liuyi31152@gmail.com"  // 替换为您的实际发件人邮箱
+                To: "janecai147@gmail.com"  // 替换为您的实际收件人邮箱
                 Subject: Test Email
                 Content-Type: text/plain; charset="UTF-8"
 
@@ -59,10 +59,10 @@
                         raw: base64Email
                     })
                 });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
                 const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status} - ${data.error.message}`);
+                }
                 console.log('Sent Email:', data);
             } catch (error) {
                 console.error('Error sending email:', error);
