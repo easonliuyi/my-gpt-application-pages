@@ -17,7 +17,8 @@
     <button onclick="sendEmail()">Send Email</button>
 
     <script>
-        const accessToken = 'ya29.a0AXooCgtRtoP_XDJ5W-pLtnDQPqyFoXKaxtBnTTnBxCFzvMCoaUijlIjeSAcv1EOxOP3DT16i1E2PqMtOO7KIw2vQMWVP6bGSPxhTeyFiyRU-qai-gsNWPAEzgmdcKmprh60YMcyOJ1fpnvTpH0JEqyTPrKvl2_BX0mb0aCgYKAQQSARISFQHGX2MikqZzCIgMuYM4MCKgFTAQCg0171';  // 替换为您从OAuth 2.0 Playground获取的访问令牌
+        // 替换为从OAuth 2.0 Playground获取的最新访问令牌
+        const accessToken = 'ya29.a0AXooCgtRtoP_XDJ5W-pLtnDQPqyFoXKaxtBnTTnBxCFzvMCoaUijlIjeSAcv1EOxOP3DT16i1E2PqMtOO7KIw2vQMWVP6bGSPxhTeyFiyRU-qai-gsNWPAEzgmdcKmprh60YMcyOJ1fpnvTpH0JEqyTPrKvl2_BX0mb0aCgYKAQQSARISFQHGX2MikqZzCIgMuYM4MCKgFTAQCg0171';
 
         async function fetchEmails() {
             try {
@@ -38,18 +39,24 @@
         }
 
         async function sendEmail() {
-            const email = `
-                From:liuyi31152@gmail.com
-                To:liuyi31152@tom.com
-                Subject: Test Email
-                Content-Type: text/plain; charset="UTF-8"
+            const email = [
+                // 替换为您的发件人电子邮件地址
+                'From: liuyi31152@gmail.com',
+                // 替换为收件人电子邮件地址
+                'To: 869591951@qq.com',
+                'Subject: Test Email',
+                'Content-Type: text/plain; charset=UTF-8',
+                '',
+                'This is a test email.'
+            ].join('\n');
 
-                This is a test email.
-            `;
             const base64Email = btoa(unescape(encodeURIComponent(email)))
                 .replace(/\+/g, '-')
                 .replace(/\//g, '_')
                 .replace(/=+$/, '');
+
+            // 输出Base64编码的邮件内容
+            console.log('Base64 Email:', base64Email);
 
             try {
                 const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
@@ -68,10 +75,4 @@
                 }
                 console.log('Sent Email:', data);
             } catch (error) {
-                console.error('Error sending email:', error);
-                console.error('Response body:', error.message);
-            }
-        }
-    </script>
-</body>
-</html>
+       
