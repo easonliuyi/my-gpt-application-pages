@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-site-verification" content="K4iv_lYjiAeDSRerAYo-fz1zma9BoZ2uRnWKAxX8OTU" />
-  <title>My GPT Application - Home</title>
+    <meta charset="UTF-8">
+    <title>My GPT Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  <h1>Welcome to My GPT Application</h1>
-  <p>Discover the features of our application and how it can help you achieve your goals.</p>
-  <nav>
-    <a href="/privacy-policy.html">Privacy Policy</a> |
-    <a href="/terms-of-service.html">Terms of Service</a>
-  </nav>
+    <h1>Welcome to My GPT Application</h1>
+    <p>Discover the features of our application and how it can help you achieve your goals.</p>
+    <nav>
+        <a href="/privacy-policy.html">Privacy Policy</a> |
+        <a href="/terms-of-service.html">Terms of Service</a>
+    </nav>
+
+    <!-- OAuth 2.0 Authorization Button -->
+    <button onclick="authorize()">Authorize Gmail Access</button>
+
+    <script>
+        const clientId = 'YOUR_CLIENT_ID';  // 替换为您的OAuth客户端ID
+        const redirectUri = 'https://easonliuyi.github.io/my-gpt-application-pages/oauth2callback';
+        const scope = 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send';
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
+
+        function authorize() {
+            window.location.href = authUrl;
+        }
+    </script>
 </body>
 </html>
