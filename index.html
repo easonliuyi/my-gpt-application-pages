@@ -17,62 +17,43 @@
     <button onclick="sendEmail()">Send Email</button>
 
     <script>
-        // 替换为从OAuth 2.0 Playground获取的最新访问令牌
-        const accessToken = 'ya29.a0AXooCgtRtoP_XDJ5W-pLtnDQPqyFoXKaxtBnTTnBxCFzvMCoaUijlIjeSAcv1EOxOP3DT16i1E2PqMtOO7KIw2vQMWVP6bGSPxhTeyFiyRU-qai-gsNWPAEzgmdcKmprh60YMcyOJ1fpnvTpH0JEqyTPrKvl2_BX0mb0aCgYKAQQSARISFQHGX2MikqZzCIgMuYM4MCKgFTAQCg0171';
+        const accessToken = 'ya29.a0AXooCgtRtoP_XDJ5W-pLtnDQPqyFoXKaxtBnTTnBxCFzvMCoaUijlIjeSAcv1EOxOP3DT16i1E2PqMtOO7KIw2vQMWVP6bGSPxhTeyFiyRU-qai-gsNWPAEzgmdcKmprh60YMcyOJ1fpnvTpH0JEqyTPrKvl2_BX0mb0aCgYKAQQSARISFQHGX2MikqZzCIgMuYM4MCKgFTAQCg0171';  // 替换为您从OAuth 2.0 Playground获取的访问令牌
 
         async function fetchEmails() {
-            try {
-                const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+            const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
                 }
-                const data = await response.json();
-                console.log('Emails:', data);
-            } catch (error) {
-                console.error('Error fetching emails:', error);
-            }
+            });
+            const data = await response.json();
+            console.log('Emails:', data);
         }
 
         async function sendEmail() {
-            const email = [
-                // 替换为您的发件人电子邮件地址
-                'From: liuyi31152@gmail.com',
-                // 替换为收件人电子邮件地址
-                'To: 869591951@qq.com',
-                'Subject: Test Email',
-                'Content-Type: text/plain; charset=UTF-8',
-                '',
-                'This is a test email.'
-            ].join('\n');
+            const email = `
+                From: "liuyi31152@gmail.com"
+                To: "janecai147@gmail.com"
+                Subject: Test Email
+                Content-Type: text/plain; charset="UTF-8"
 
-            const base64Email = btoa(unescape(encodeURIComponent(email)))
-                .replace(/\+/g, '-')
-                .replace(/\//g, '_')
-                .replace(/=+$/, '');
+                This is a test email.
+            `;
+            const base64Email = btoa(email).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
-            // 输出Base64编码的邮件内容
-            console.log('Base64 Email:', base64Email);
-
-            try {
-                const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        raw: base64Email
-                    })
-                });
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} - ${data.error.message}`);
-                }
-                console.log('Sent Email:', data);
-            } catch (error) {
-       
+            const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    raw: base64Email
+                })
+            });
+            const data = await response.json();
+            console.log('Sent Email:', data);
+        }
+    </script>
+</body>
+</html>
